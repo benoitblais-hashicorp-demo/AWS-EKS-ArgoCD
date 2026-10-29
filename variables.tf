@@ -14,7 +14,7 @@ variable "customer_name" {
   default     = "hashicat"
 }
 
-variable "demo_subdomain" {
+variable "argocd_subdomain" {
   description = "(Optional) The subdomain to prepend to the public_hosted_zone for ArgoCD (e.g., 'argocd')."
   type        = string
   default     = "argocd"

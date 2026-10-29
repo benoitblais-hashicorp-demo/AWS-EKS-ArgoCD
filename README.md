@@ -86,7 +86,7 @@ The following Modules are called:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | `customer_name` | Corresponds to the `cdl-customer-name` tag in AWS | `string` | `"hashicat"` | no |
-| `demo_subdomain` | The subdomain for exposing ArgoCD (e.g. `argocd`) | `string` | `"argocd"` | no |
+| `argocd_subdomain` | The subdomain for exposing ArgoCD (e.g. `argocd`) | `string` | `"argocd"` | no |
 | `doormat_username` | Doormat username for IAM cluster access integration | `string` | `""` | no |
 | `environment` | Environment tag (e.g. `dev`, `prod`) | `string` | `"dev"` | no |
 | `instance_type` | EC2 instance type for EKS managed node group | `string` | `"t3.medium"` | no |

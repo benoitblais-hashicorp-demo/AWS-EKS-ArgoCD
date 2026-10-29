@@ -5,8 +5,8 @@
 # ==============================================================================
 # This file provisions a time_sleep resource that acts as a dependency gate
 # for all Step 3 resources. It ensures that Step 2 Kubernetes tooling
-# (Ingress Controller, Vault Secrets Operator, authentication roles) is fully 
-# deployed and stable before deploying the demo application.
+# (Ingress Controller, ArgoCD HA cluster) is fully
+# deployed and stable before exposing the ArgoCD service.
 # This execution is gated by the step_3 variable.
 # ==============================================================================
 

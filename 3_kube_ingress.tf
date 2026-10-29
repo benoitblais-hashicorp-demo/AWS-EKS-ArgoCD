@@ -35,7 +35,7 @@ resource "kubernetes_ingress_v1" "argocd_ingress" {
     ingress_class_name = "nginx"
 
     rule {
-      host = var.public_hosted_zone != "" ? "${var.demo_subdomain}.${var.public_hosted_zone}" : null
+      host = var.public_hosted_zone != "" ? "${var.argocd_subdomain}.${var.public_hosted_zone}" : null
       http {
         path {
           path      = "/"
