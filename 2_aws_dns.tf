@@ -4,9 +4,9 @@
 # AWS DNS AND TLS CERTIFICATE MANAGEMENT
 # ==============================================================================
 # This file provisions the public DNS records and TLS certificates required for
-# exposing the Kubernetes-hosted application to the internet securely. It requests
-# an ACM certificate for the demo application, validates it via Route53, and 
-# maps the subdomain to the NGINX Ingress Network Load Balancer (NLB) IPs.
+# exposing ArgoCD to the internet securely. It requests an ACM certificate for
+# ArgoCD, validates it via Route53, and maps the subdomain to the NGINX Ingress
+# Network Load Balancer (NLB) hostname.
 # This execution is gated by the step_2 and public_hosted_zone variables.
 # ==============================================================================
 
@@ -15,7 +15,7 @@
 # ------------------------------------------------------------------------------
 
 # 1. Retrieve the Route53 Hosted Zone where our public DNS records will be published
-data "aws_route53_zone" "demo" {
+data "aws_route53_zone" "primary" {
   count = var.step_2 && var.public_hosted_zone != "" ? 1 : 0
   name  = var.public_hosted_zone
 }
@@ -24,10 +24,10 @@ data "aws_route53_zone" "demo" {
 # TLS CERTIFICATE PROVISIONING & VALIDATION (ACM)
 # ------------------------------------------------------------------------------
 
-# 2. Request a public TLS certificate in AWS Certificate Manager (ACM) for the application
+# 2. Request a public TLS certificate in AWS Certificate Manager (ACM) for ArgoCD
 resource "aws_acm_certificate" "public" {
   count             = var.step_2 && var.public_hosted_zone != "" ? 1 : 0
-  domain_name       = "${var.demo_subdomain}.${var.public_hosted_zone}"
+  domain_name       = "${var.argocd_subdomain}.${var.public_hosted_zone}"
   validation_method = "DNS"
 
   lifecycle {
@@ -45,7 +45,7 @@ resource "aws_route53_record" "public_validation" {
     }
   } : {}
 
-  zone_id = data.aws_route53_zone.demo[0].zone_id
+  zone_id = data.aws_route53_zone.primary[0].zone_id
   name    = each.value.name
   type    = each.value.type
   ttl     = 60
@@ -82,11 +82,11 @@ data "kubernetes_service_v1" "nginx_ingress" {
   }
 }
 
-# 7. Map the public demo subdomain directly to the NLB's AWS ingress hostname
+# 7. Map the public ArgoCD subdomain directly to the NLB's AWS ingress hostname
 resource "aws_route53_record" "web_dns_record" {
   count   = var.step_2 && var.public_hosted_zone != "" ? 1 : 0
-  zone_id = data.aws_route53_zone.demo[0].zone_id
-  name    = "${var.demo_subdomain}.${var.public_hosted_zone}"
+  zone_id = data.aws_route53_zone.primary[0].zone_id
+  name    = "${var.argocd_subdomain}.${var.public_hosted_zone}"
   type    = "CNAME"
   ttl     = 300
   records = [data.kubernetes_service_v1.nginx_ingress[0].status[0].load_balancer[0].ingress[0].hostname]

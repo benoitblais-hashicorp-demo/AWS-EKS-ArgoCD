@@ -3,8 +3,8 @@
 # ==============================================================================
 # LOCAL IDENTIFIERS
 # ==============================================================================
-# This file generates a randomized suffix to attach to the demo's global prefix.
-# This ensures that multiple instances of this demo can securely run in the 
+# This file generates a randomized suffix to attach to the global prefix.
+# This ensures that multiple instances of this deployment can securely run in the
 # same AWS account without causing naming collisions (e.g., Load Balancers, VPCs).
 # ==============================================================================
 

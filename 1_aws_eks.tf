@@ -33,7 +33,7 @@ module "eks" {
   source                                   = "terraform-aws-modules/eks/aws"
   version                                  = "21.15.1"
   name                                     = "${local.resources_prefix}-eks"
-  kubernetes_version                       = "1.37"
+  kubernetes_version                       = "1.34"
   endpoint_public_access                   = true
   enable_cluster_creator_admin_permissions = true
   vpc_id                                   = module.vpc.vpc_id
