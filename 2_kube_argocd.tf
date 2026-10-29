@@ -9,7 +9,7 @@
 # ==============================================================================
 
 resource "helm_release" "argocd" {
-  count      = var.step_2 ? 1 : 0
+  count = var.step_2 ? 1 : 0
   depends_on = [
     time_sleep.step_2,
     time_sleep.helm_wait,
